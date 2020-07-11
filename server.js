@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { login, signup } = require("./handlers/auth");
+const { getPins, createPin } = require("./handlers/pins");
 require("dotenv").config();
 
 const connectionString =
@@ -25,6 +26,9 @@ app.get("/", (req, res) => {
 
 app.post("/login", login);
 app.post("/signup", signup);
+
+app.get("/pins", getPins);
+app.post("/pins", createPin);
 
 mongoose
   .connect(connectionString, {
