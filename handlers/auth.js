@@ -13,7 +13,7 @@ exports.login = async (req, res, next) => {
     const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
-      return res.status(404).json({ error: "Usuario no existe " });
+      return res.status(404).json({ error: "Usuario no existe" });
     }
 
     const isCorrectPassword = await bcrypt.compare(
@@ -59,7 +59,7 @@ exports.signup = async (req, res, next) => {
       image,
       isAdmin,
     });
-    const savedUser = user.save();
+    const savedUser = await user.save();
 
     return res.status(201).json({ data: savedUser });
   } catch (error) {
