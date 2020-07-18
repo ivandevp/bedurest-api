@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { ApolloServer } = require("apollo-server-express");
+const { typeDefs, resolvers } = require("./schema");
 const { login, signup } = require("./handlers/auth");
 const { getPins, createPin } = require("./handlers/pins");
 require("dotenv").config();
@@ -12,6 +14,11 @@ const connectionString =
 const app = express();
 const port = process.env.PORT || 9000;
 
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -19,6 +26,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cors());
+
+server.applyMiddleware({ app });
 
 app.get("/", (req, res) => {
   res.json({ message: "Hola desde Bedurest API " });
